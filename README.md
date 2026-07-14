@@ -1,11 +1,11 @@
-https://rianinursyarifah-arch.github.io/RainsScoop/
+
 # 🌟 Rain's Scoop
 
 > **Proyek Akhir Mata Kuliah:** KAIT II (Administrasi Bisnis) **Program Studi:** Administrasi Bisnis **Semester:** Genap 2025/2026 **Identitas:** Riani Nur Syaridah NIM [209250206] Kelas [Administrasi Bisnis 8]
 
 ### 🌐 Live Website Links
 * **Halaman Utama (Customer):** [Klik di Sini](https://rianinursyarifah-arch.github.io/RainsScoop/)
-* **Halaman Login Admin:** [Klik di Sini](https://raindrvs.github.io/RainsScoop/admin_login.html)
+* **Halaman Login Admin:** [Klik di Sini](https://rianinursyarifah-arch.github.io/RainsScoop/admin_login.html)
 
 <br><hr><br>
 
@@ -23,7 +23,7 @@ Rain's Scoop adalah sebuah *prototype platform e-commerce* fungsional, responsif
 * **Sistem Checkout Terintegrasi:** Form pengisian data pengiriman lengkap dengan simulasi perhitungan total belanja otomatis yang terhubung ke nomor WhatsApp.
 * **Dashboard Admin Terintegrasi:** Halaman khusus bagi manajemen untuk mengelola daftar produk, memantau perubahan stok, dan melihat ringkasan pesanan masuk.
 
-### 2. Struktur Folder Proyek & Penjelasan Berkas
+### 2. Struktur Folder Proyek & Penjelasan Berkas 
 ```text
 📁 RainsScoop/
 ├── 📁 images/                   -> Aset gambar menu Gelato (*-gelato.jpg) dan QRIS Pembayaran
@@ -53,3 +53,63 @@ Rain's Scoop adalah sebuah *prototype platform e-commerce* fungsional, responsif
     ├── admin_tambah_produk.html -> Form input untuk menambahkan varian menu Gelato baru
     ├── admin_edit_produk.html   -> Halaman pembaruan/modifikasi data menu yang sudah ada
     └── admin_pesanan.html       -> Manajemen laporan data riwayat transaksi masuk pembeli
+
+3. Teknologi & Library yang Digunakan
+HTML5 & CSS3: Penyusunan struktur kode bersih dan desain antarmuka modern (modern styling UI).
+
+Vanilla JavaScript ES6+: Pemrosesan logika dinamis keranjang belanja, manajemen state array produk, dan pengiriman order.
+
+Google Analytics Script (Dummy Integration): Tersemat di seluruh file HTML untuk simulasi pelacakan metrik konversi bisnis.
+
+
+
+💼 Dokumentasi Strategi Bisnis (Business Overview)
+A. Value Proposition
+"Bringing the Authentic Taste of Italian Gelato Straight to Your Doorstep."
+
+Kami memposisikan diri sebagai penyedia Gelato premium dengan bahan-bahan alami berkualitas tinggi, tekstur yang lembut, serta pilihan varian rasa yang inovatif untuk memberikan pengalaman kuliner yang eksklusif bagi pencinta dessert.
+
+
+
+B. Segmentasi Pasar & Target Konsumen
+Geografis: Masyarakat urban kelas menengah ke atas yang berdomisili di kawasan perkotaan besar di Indonesia.
+
+Demografis: Pria dan Wanita (fokus utama usia 15–35 tahun), mahasiswa, pekerja kantoran, serta keluarga muda yang menyukai hidangan manis premium.
+
+Psikografis: Individu dengan gaya hidup aktif/modern yang menaruh perhatian tinggi pada kualitas rasa kuliner, estetika visual produk, serta kenyamanan berbelanja online secara praktis.
+
+
+
+C. Analisis Pasar & Keunggulan Kompetitif
+Analisis Pasar: Industri makanan dan minuman (food & beverage), khususnya kategori hidangan penutup dingin di Indonesia, terus menunjukkan tren peningkatan yang stabil. Konsumen saat ini mencari alternatif dessert yang lebih sehat, menggunakan buah asli, dan memiliki proses pemesanan yang cepat.
+
+Keunggulan Kompetitif: Dibandingkan dengan kedai es krim konvensional, Rain's Scoop menawarkan platform pemesanan mandiri yang instan, kurasi menu yang terfokus, serta sistem checkout langsung ke saluran layanan pelanggan WhatsApp untuk mempercepat konversi penjualan.
+
+
+
+D. Revenue Stream & Strategi Harga
+Revenue Stream: Penjualan langsung produk Gelato ritel (direct consumer sales), penjualan paket pesta/acara (event catering packages), serta paket bingkisan eksklusif (seasonal hampers).
+
+Strategi Harga: Menerapkan value-based pricing yang mencerminkan kualitas bahan impor dan kesegaran buah asli, namun tetap bersaing di segmen pasar artisan dessert lokal.
+
+
+
+F. Rencana Optimasi Data (Web Analytics)
+Melalui skrip Google Analytics yang disematkan, metrik utama yang dipantau secara berkala untuk mengambil keputusan bisnis adalah:
+
+Conversion Rate (CR): Mengukur efektivitas halaman katalog dalam mendorong pengunjung menambahkan menu Gelato ke keranjang hingga menekan tombol order WhatsApp.
+
+Product Page Engagement: Mengidentifikasi varian rasa Gelato yang paling sering dilihat oleh calon pembeli untuk optimasi perencanaan produksi dapur.
+
+Cart Abandonment Rate: Menilai hambatan psikologis konsumen sebelum checkout guna mempermudah alur pengisian form data pengiriman.
+
+
+
+🚀 Panduan Instalasi Lokal
+Unduh repositori ini dalam bentuk file ZIP atau jalankan perintah git clone https://github.com/raindrvs/RainsScoop.git.
+
+Pastikan susunan file .html, script.js, dan direktori images/ berada dalam hierarki struktur direktori yang sama.
+
+Klik dua kali pada file index.html untuk menjalankan platform di Google Chrome atau browser pilihan Anda menggunakan ekstensi Live Server.
+
+Selesai.
