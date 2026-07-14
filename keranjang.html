@@ -1,0 +1,554 @@
+ <!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keranjang — Rain'sScoop</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    /* ===== PALET WARNA PASTEL & INSTRUKSI FONT ===== */
+    :root {
+      --pink-bg: #FFFDD0;     /* Cream Pastel untuk Background Utama */
+      --white: #FFFEEA;       /* Light Cream Pastel untuk Background Kartu */
+      --off-white: #E8F5E9;   /* Hijau Pastel Muted untuk Background Input */
+      --border: #C8E6C9;      /* Hijau Pastel untuk Border */
+      --pink-deep: #F8BBD0;    /* Pink Pastel untuk Elemen Utama / Tombol */
+      --pink-light: #FDF0F3;   /* Light Pink Pastel untuk Badge / Sorotan */
+      --green-deep: #A5D6A7;   /* Hijau Pastel Terang untuk Sorotan Positif */
+      --green-light: #E8F5E9;  /* Hijau Pastel Sangat Muda */
+      --text-dark: #333333;
+      --text-mid: #555555;
+      --text-light: #777777;
+    }
+
+    /* Mengubah seluruh font isi (selain heading yang dikecualikan) menjadi Comic Sans MS */
+    body, input, select, textarea, button, span, p, label, li, a, td, th, div:not(.kr-heading):not(h1):not(h3) {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif !important;
+    }
+
+    .kr-page {
+      min-height: 100vh;
+      background: var(--pink-bg);
+      padding: 6rem 1rem 3rem;
+    }
+
+    .kr-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .kr-heading {
+      margin-bottom: 2rem;
+    }
+
+    .kr-heading .section-tag {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--pink-deep);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    .kr-heading h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--text-dark);
+    }
+
+    .kr-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 850px) {
+      .kr-grid { grid-template-columns: 1fr; }
+    }
+
+    .kr-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      padding: 1.5rem;
+    }
+
+    .kr-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--text-dark);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Table item */
+    .kr-table-wrap {
+      overflow-x: auto;
+    }
+
+    .kr-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .kr-table th {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-light);
+      border-bottom: 1px solid var(--border);
+      font-weight: 500;
+    }
+
+    .kr-table td {
+      padding: 1.25rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .kr-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .kr-prod-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .kr-emoji {
+      font-size: 1.8rem;
+      width: 48px;
+      height: 48px;
+      background: var(--pink-light);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .kr-name {
+      font-weight: 500;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .kr-cat {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 0.15rem;
+    }
+
+    .kr-price {
+      font-size: 0.92rem;
+      color: var(--text-mid);
+    }
+
+    .kr-subtotal {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    /* Qty Control */
+    .kr-qty {
+      display: inline-flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--off-white);
+    }
+
+    .kr-qty-btn {
+      width: 28px;
+      height: 28px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .kr-qty-btn:hover {
+      background: var(--pink-light);
+      color: var(--pink-deep);
+    }
+
+    .kr-qty-num {
+      width: 32px;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .kr-del-btn {
+      background: none;
+      border: none;
+      color: #d4617a;
+      cursor: pointer;
+      padding: 0.25rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      border-radius: 4px;
+    }
+
+    .kr-del-btn:hover {
+      background: var(--pink-light);
+    }
+
+    /* Ringkasan & Voucher */
+    .kr-voucher-box {
+      margin-bottom: 1.25rem;
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+    }
+
+    .kr-v-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      margin-bottom: 0.35rem;
+    }
+
+    .kr-v-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .kr-v-input {
+      flex: 1;
+      padding: 0.45rem 0.75rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      outline: none;
+      background: var(--white);
+    }
+
+    .kr-v-input:focus {
+      border-color: var(--pink-deep);
+    }
+
+    .kr-v-btn {
+      padding: 0.45rem 0.85rem;
+      background: var(--pink-deep);
+      color: #333333;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .kr-v-btn:hover {
+      background: #f4a2b8;
+    }
+
+    .kr-voucher-status {
+      font-size: 0.78rem;
+      margin-top: 0.4rem;
+      min-height: 1rem;
+    }
+    .kr-voucher-status.error { color: #d4617a; }
+    .kr-voucher-status.success { color: #2e7d32; }
+
+    .kr-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      margin-bottom: 0.6rem;
+    }
+
+    .kr-row.total {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .kr-discount {
+      color: var(--pink-deep);
+    }
+
+    .kr-free {
+      color: var(--green-deep);
+      font-weight: 500;
+    }
+
+    .kr-checkout-btn {
+      width: 100%;
+      margin-top: 1.25rem;
+      padding: 0.9rem;
+      background: var(--pink-deep);
+      color: #333333;
+      border: none;
+      border-radius: var(--radius-full);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .kr-checkout-btn:hover {
+      background: #f4a2b8;
+      transform: translateY(-1px);
+    }
+
+    .kr-empty {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-light);
+    }
+
+    .kr-empty span {
+      font-size: 3.5rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .kr-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      color: var(--pink-deep);
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      transition: var(--transition);
+    }
+
+    .kr-back-link:hover {
+      gap: 0.6rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">🍨</span> <span class="logo-text">Rain's <em>Scoop</em></span> </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="index.html#products" class="nav-link">Produk</a></li>
+        <li><a href="index.html#contact" class="nav-link">Kontak</a></li>
+        <li><a href="tracking.html" class="nav-link">Pesanan</a></li>
+        <li id="navLoginItem"><a href="login.html" class="nav-link">Login</a></li>
+        <li id="navUserItem" style="display:none;align-items:center;gap:0.5rem;">
+          <a href="profile.html" class="nav-link" id="navUserName">👤 Akun</a>
+          <button class="nav-link nav-logout-btn" onclick="logoutUser()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;color:inherit;padding:0.4rem 0.75rem;">Keluar</button>
+        </li>
+      </ul>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="kr-page">
+    <div id="apinWatermark">Developed by Riri</div>
+    <div class="kr-container">
+
+      <a href="index.html#products" class="kr-back-link">← Tambah menu es krim lagi</a>
+
+      <div class="kr-heading">
+        <span class="section-tag">Daftar Pilihan Anda</span> <h1>Rain'sScoop</h1> </div>
+
+      <div class="kr-grid" id="krGrid">
+        <div class="kr-card">
+          <div class="kr-table-wrap">
+            <table class="kr-table">
+              <thead>
+                <tr>
+                  <th>Produk</th>
+                  <th>Harga</th>
+                  <th>Jumlah</th>
+                  <th>Subtotal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="krTableBody">
+                </tbody>
+            </table>
+          </div>
+          <div id="krEmptyState" style="display:none;" class="kr-empty">
+            <span>🍨</span>
+            <p>Keranjang pesanan es krimmu masih kosong.<br/>Yuk, cari rasa gelato favoritmu!</p>
+          </div>
+        </div>
+
+        <div id="krSummaryCard" class="kr-card">
+          <h3>📋 Ringkasan Belanja</h3>
+
+          <div class="kr-voucher-box">
+            <label class="kr-v-label" for="voucherInput">Punya Kode Voucher?</label>
+            <div class="kr-v-row">
+              <input type="text" id="voucherInput" class="kr-v-input" placeholder="Rain'sCUTE" />
+              <button class="kr-v-btn" type="button" onclick="applyVoucher()">Pakai</button>
+            </div>
+            <div class="kr-voucher-status" id="voucherStatus">Gunakan kode voucher Rain'sCUTE</div>
+          </div>
+
+          <div class="kr-row">
+            <span>Subtotal</span>
+            <span id="krSubtotal">Rp 0</span>
+          </div>
+          <div class="kr-row">
+            <span>Diskon</span>
+            <span class="kr-discount" id="krDiscount">-Rp 0</span>
+          </div>
+          <div class="kr-row">
+            <span>Ongkos Kirim</span>
+            <span class="kr-free">GRATIS</span>
+          </div>
+          <div class="kr-row total">
+            <span>Total Bayar</span>
+            <span id="krTotal">Rp 0</span>
+          </div>
+
+          <button class="kr-checkout-btn" onclick="checkout()">
+            Lanjut ke Pembayaran <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+  <script>
+    /* ===== LOGIKA HALAMAN KERANJANG EXCLUSIVE ===== */
+    function renderKeranjang() {
+      const tbody = document.getElementById("krTableBody");
+      const emptyState = document.getElementById("krEmptyState");
+      const summaryCard = document.getElementById("krSummaryCard");
+      
+      if (!tbody) return;
+
+      if (!cart || cart.length === 0) {
+        tbody.innerHTML = "";
+        emptyState.style.display = "block";
+        if (summaryCard) summaryCard.style.display = "none";
+        document.querySelector(".kr-table").style.display = "none";
+        return;
+      }
+
+      emptyState.style.display = "none";
+      if (summaryCard) summaryCard.style.display = "block";
+      document.querySelector(".kr-table").style.display = "table";
+
+      let html = "";
+      cart.forEach((item, index) => {
+        const itemSubtotal = item.price * item.qty;
+        html += `
+          <tr>
+            <td>
+                <div class="kr-prod-cell">
+                <div class="kr-emoji">${(function(){
+                  const img = normalizeImagePath(item.foto || item.image || "");
+                  return img ? `<img src="${img}" alt="${item.name}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;" />` : (item.emoji || '🍦');
+                })()}</div>
+                <div>
+                  <div class="kr-name">${item.name}</div>
+                  <div class="kr-cat">${item.category || 'Gelato'}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="kr-price">${formatPrice(item.price)}</div>
+            </td>
+            <td>
+              <div class="kr-qty">
+                <button class="kr-qty-btn" onclick="updateKrQty(${index}, -1)">-</button>
+                <div class="kr-qty-num">${item.qty}</div>
+                <button class="kr-qty-btn" onclick="updateKrQty(${index}, 1)">+</button>
+              </div>
+            </td>
+            <td>
+              <div class="kr-subtotal">${formatPrice(itemSubtotal)}</div>
+            </td>
+            <td>
+              <button class="kr-del-btn" onclick="deleteKrItem(${index})" title="Hapus item">
+                <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+      lucide.createIcons();
+
+      // Hitung ulang ringkasan belanja
+      const summary = getCartSummary();
+      document.getElementById("krSubtotal").textContent = formatPrice(summary.subtotal);
+      document.getElementById("krDiscount").textContent = "- " + formatPrice(summary.discount);
+      document.getElementById("krTotal").textContent = formatPrice(summary.total);
+    }
+
+    function updateKrQty(index, change) {
+      cart[index].qty += change;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      saveState();
+      renderKeranjang();
+      updateCartCount();
+    }
+
+    function deleteKrItem(index) {
+      cart.splice(index, 1);
+      saveState();
+      renderKeranjang();
+      updateCartCount();
+      showToast("❌ Menu berhasil dihapus");
+    }
+
+    function updateCartCount() {
+      const total = cart.reduce((sum, item) => sum + Number(item.qty || 0), 0);
+      const el = document.getElementById("cartCount");
+      if (!el) return;
+      el.textContent = total > 0 ? total : "0";
+      el.style.display = total > 0 ? "flex" : "none";
+    }
+
+    function initKeranjangPage() {
+      loadState();
+      renderKeranjang();
+      updateCartCount();
+    }
+
+    initKeranjangPage();
+  </script>
+</body>
+</html>

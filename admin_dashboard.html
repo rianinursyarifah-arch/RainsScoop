@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Rain'sScoop Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin_style.css" />
+  <style>
+    /* TAMBAHAN: Override warna eksternal ke tema pastel & font Snap ITC warna hitam */
+    :root {
+      --ad-bg: #FFFDD0;          /* Cream Pastel */
+      --ad-sidebar: #E8F5E9;     /* Hijau Pastel */
+      --ad-card: #FFFDD0;        /* Cream Pastel */
+      --ad-offwhite: #FFFEEA;    /* Light Cream Pastel */
+      --ad-pink: #F8BBD0;        /* Pink Pastel */
+      --ad-pink-lt: #FDF0F3;     /* Light Pink Pastel */
+      --ad-border: #C8E6C9;      /* Hijau Pastel Muted */
+      --ad-muted: #333333;       /* Hitam Muted */
+    }
+
+    /* Mengubah seluruh isi dashboard menggunakan font Comic Sans MS dengan warna hitam */
+    * {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Sans', sans-serif !important;
+      color: #000000 !important; /* Font warna hitam */
+    }
+
+    /* Hanya tulisan heading dan sub heading saja yang diubah menjadi Snap ITC */
+    .ad-brand-name,
+    .ad-brand-sub,
+    .ad-page-title,
+    .ad-page-sub,
+    .ad-card-title {
+      font-family: 'Copperplate Gothic Light', 'Arial Black', sans-serif !important;
+    }
+
+    /* Mengembalikan warna ikon emoji bawaan agar tetap terlihat berwarna */
+    .ad-brand-icon, .ad-nav-icon, .ad-stat-icon {
+      color: initial !important;
+    }
+
+    /* Tambahan penyesuaian visual warna background utama dan tata letak */
+    body, .ad-shell {
+      background-color: var(--ad-bg) !important;
+    }
+    .ad-sidebar {
+      background-color: var(--ad-sidebar) !important;
+      border-right: 2px solid var(--ad-pink);
+    }
+    .ad-card, .ad-stat-card {
+      background-color: var(--ad-card) !important;
+      border: 2px solid var(--ad-pink) !important;
+    }
+    .ad-table th {
+      background-color: var(--ad-sidebar) !important;
+      border-bottom: 2px solid var(--ad-border) !important;
+    }
+    .ad-table td {
+      border-bottom: 1px solid var(--ad-border) !important;
+    }
+    .ad-toggle-btn {
+      background: var(--ad-pink);
+      color: #000;
+      border: none;
+      border-radius: 999px;
+      padding: 0.65rem 1rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: opacity 0.2s ease;
+    }
+    .ad-toggle-btn:hover {
+      opacity: 0.92;
+    }
+    .sidebar-toggle-btn {
+      background: var(--ad-sidebar);
+      color: var(--ad-dark);
+      border: 1px solid var(--ad-border);
+      border-radius: 999px;
+      padding: 0.55rem 1rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .sidebar-toggle-btn:hover {
+      background: var(--ad-pink-lt);
+    }
+    .ad-shell.sidebar-collapsed .ad-sidebar {
+      width: 0 !important;
+      min-width: 0 !important;
+      border-right: none !important;
+      overflow: hidden;
+    }
+    .ad-shell.sidebar-collapsed .ad-sidebar .ad-brand,
+    .ad-shell.sidebar-collapsed .ad-sidebar .ad-nav,
+    .ad-shell.sidebar-collapsed .ad-sidebar .ad-sidebar-footer {
+      display: none !important;
+    }
+    .ad-shell.sidebar-collapsed .ad-main {
+      margin-left: 0 !important;
+    }
+    .ad-shell .ad-sidebar,
+    .ad-shell .ad-main {
+      transition: all 0.25s ease;
+    }
+    .ad-category-list {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px dashed var(--ad-border);
+      border-radius: 14px;
+      background: var(--ad-pink-lt);
+      display: none;
+      gap: 0.65rem;
+    }
+    .ad-category-list.open {
+      display: grid;
+    }
+    .ad-category-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.55rem 0.5rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.85);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div class="ad-shell">
+
+  <!-- SIDEBAR (akan diganti oleh shared component) -->
+  <aside class="ad-sidebar">
+    <div class="ad-brand">
+      <!-- UBAH: Brand Icon menjadi Ice Cream -->
+      <div class="ad-brand-icon">🍨</div>
+      <!-- UBAH: Nama Dashboard menjadi Lifa Flora -->
+      <div class="ad-brand-name">Rain's<em>Scoop</em></div>
+      <div class="ad-brand-sub">Panel Admin</div>
+    </div>
+    <nav class="ad-nav">
+      <a href="admin_dashboard.html" class="ad-nav-link active"><span class="ad-nav-icon">📊</span> Dashboard</a>
+      <a href="admin_produk.html"    class="ad-nav-link"><span class="ad-nav-icon">🍨</span> Produk</a>
+      <a href="admin_pesanan.html"   class="ad-nav-link"><span class="ad-nav-icon">📦</span> Pesanan</a>
+    </nav>
+    <div class="ad-sidebar-footer">
+      <button class="ad-logout-btn" onclick="doLogout()">🚪 Keluar</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="ad-main" id="adMain">
+
+    <div class="ad-topbar">
+      <div>
+        <div class="ad-page-title">Dashboard</div>
+        <div class="ad-page-sub">Selamat datang kembali, Admin 👋</div>
+      </div>
+      <button id="sidebarToggleBtn" class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    </div>
+    <div id="RSyWatermark">Developed by RSy</div>
+    <!-- Stat cards -->
+    <div class="ad-stat-grid">
+      <div class="ad-stat-card">
+        <!-- UBAH: Icon menjadi Gelato -->
+        <div class="ad-stat-icon">🍨</div>
+        <div class="ad-stat-val" id="statProduk">—</div>
+        <div class="ad-stat-label">Total Produk</div>
+      </div>
+      <div class="ad-stat-card">
+        <div class="ad-stat-icon">📦</div>
+        <div class="ad-stat-val" id="statPesanan">—</div>
+        <div class="ad-stat-label">Total Pesanan</div>
+      </div>
+      <div class="ad-stat-card">
+        <div class="ad-stat-icon">💰</div>
+        <div class="ad-stat-val" id="statRevenue">—</div>
+        <div class="ad-stat-label">Total Pendapatan</div>
+      </div>
+      <div class="ad-stat-card">
+        <div class="ad-stat-icon">⚠️</div>
+        <div class="ad-stat-val" id="statStok">—</div>
+        <div class="ad-stat-label">Stok Hampir Habis</div>
+      </div>
+    </div>
+
+    <div class="ad-card">
+      <div class="ad-card-header" style="justify-content:space-between;align-items:center;gap:1rem;">
+        <span class="ad-card-title">🗂️ Kategori</span>
+        <button id="categoryToggleBtn" class="ad-toggle-btn" onclick="toggleCategorySection()">Buka Kategori</button>
+      </div>
+      <div id="categorySection" class="ad-category-list">
+        <div class="ad-category-item">🥛 Susu</div>
+        <div class="ad-category-item">🍓 Buah</div>
+        <div class="ad-category-item">🌿 Authentik</div>
+        <div class="ad-category-item">🍧 Mix</div>
+      </div>
+    </div>
+
+    <!-- Grid bawah -->
+    <div class="ad-dash-grid">
+
+      <!-- Pesanan terbaru -->
+      <div class="ad-card">
+        <div class="ad-card-header">
+          <span class="ad-card-title">📦 Pesanan Terbaru</span>
+          <a href="admin_pesanan.html" class="ad-link">Lihat semua →</a>
+        </div>
+        <div class="ad-table-wrap">
+          <table class="ad-table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Pembeli</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Tanggal</th>
+              </tr>
+            </thead>
+            <tbody id="dashRecentOrders">
+              <tr><td colspan="5" class="ad-empty">Memuat...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Stok rendah -->
+      <div class="ad-card">
+        <div class="ad-card-header">
+          <span class="ad-card-title">⚠️ Stok Hampir Habis</span>
+          <a href="admin_produk.html" class="ad-link">Kelola →</a>
+        </div>
+        <div class="ad-table-wrap">
+          <table class="ad-table">
+            <thead>
+              <tr>
+                <th>Produk</th>
+                <th>Stok</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="dashStokRendah">
+              <tr><td colspan="3" class="ad-empty">Memuat...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+  function toggleCategorySection() {
+    const section = document.getElementById("categorySection");
+    const btn = document.getElementById("categoryToggleBtn");
+    if (!section || !btn) return;
+    const isOpen = section.classList.toggle("open");
+    btn.textContent = isOpen ? "Tutup Kategori" : "Buka Kategori";
+  }
+  // toggleSidebar() & init collapse sekarang di-handle oleh admin_sidebar_component.js
+</script>
+<script src="admin_sidebar_component.js"></script>
+<script src="admin_script.js"></script>
+<script>initDashboard();</script>
+</body>
+</html>

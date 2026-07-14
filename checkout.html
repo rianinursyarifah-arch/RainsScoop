@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=mdevice-width, initial-scale=1.0" />
+  <title>Rain'sScoop — Dashboard Gelato Lezat</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    /* ===== PALET WARNA PASTEL & INSTRUKSI FONT ===== */
+    :root {
+      --pink-bg: #FFFDD0;       /* Cream Pastel untuk Background Utama */
+      --white: #FFFEEA;         /* Light Cream Pastel untuk Background Kartu */
+      --off-white: #E8F5E9;     /* Hijau Pastel Muted untuk Background Input/Elemen */
+      --border: #C8E6C9;        /* Hijau Pastel untuk Border */
+      --pink-deep: #F8BBD0;      /* Pink Pastel untuk Elemen Utama / Tombol */
+      --pink-light: #FDF0F3;     /* Light Pink Pastel untuk Badge / Sorotan */
+      --green-deep: #A5D6A7;     /* Hijau Pastel Terang untuk Highlight / Gratis */
+      --green-light: #E8F5E9;    /* Hijau Pastel Sangat Muda */
+      --text-dark: #333333;
+      --text-mid: #555555;
+      --text-light: #777777;
+    }
+
+    /* Mengubah seluruh font isi (selain heading yang dikecualikan) menjadi Comic Sans MS */
+    body, input, select, textarea, button, span, p, label, li, a, div:not(.hero-title):not(.section-title):not(h1):not(h2):not(h3) {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif !important;
+    }
+
+    /* Modifikasi penyesuaian warna navbar & elemen agar padu */
+    .navbar { background: var(--white); border-bottom: 1px solid var(--border); }
+    .nav-link { color: var(--text-dark); }
+    .nav-link.active, .nav-link:hover { color: var(--pink-deep); }
+    .cart-btn { background: var(--pink-light); color: var(--pink-deep); }
+    .cart-count { background: var(--pink-deep); color: #333333; }
+    .hero { background: linear-gradient(135deg, var(--pink-bg) 0%, var(--off-white) 100%); }
+    .btn-primary { background: var(--pink-deep); color: #333333; border: none; }
+    .btn-primary:hover { background: #f4a2b8; }
+    .btn-outline { border: 2px solid var(--border); color: var(--text-dark); }
+    .btn-outline:hover { background: var(--off-white); }
+    .promo-banner { background: var(--pink-deep); color: #333333; }
+    .voucher-card { background: var(--white); border: 2px solid var(--border); }
+    .voucher-badge { background: var(--pink-light); color: var(--pink-deep); }
+    .feature-card, .vision-card, .info-card { background: var(--white); border: 1px solid var(--border); }
+    .feature-icon { background: var(--pink-light); }
+    .filter-btn.active { background: var(--pink-deep); color: #333333; border-color: var(--pink-deep); }
+    .filter-btn { background: var(--white); border: 1px solid var(--border); color: var(--text-dark); }
+    .footer { background: var(--off-white); border-top: 1px solid var(--border); color: var(--text-dark); }
+    .cart-sidebar { background: var(--white); border-left: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">
+        <span class="logo-icon">🍨</span> <span class="logo-text">Rain's <em>Scoop</em></span> </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#products" class="nav-link">Produk</a></li>
+        <li><a href="#contact" class="nav-link">Kontak</a></li>
+        <li><a href="tracking.html" class="nav-link">Pesanan</a></li>
+        <li id="navLoginItem"><a href="login.html" class="nav-link">Login</a></li>
+        <li id="navUserItem" style="display:none;align-items:center;gap:0.5rem;">
+          <a href="profile.html" class="nav-link" id="navUserName">👤 Akun</a>
+          <button class="nav-link nav-logout-btn" onclick="logoutUser()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;color:inherit;padding:0.4rem 0.75rem;">Keluar</button>
+        </li>
+      </ul>
+
+      <button class="cart-btn" id="cartBtn" onclick="toggleCart()">
+        <i data-lucide="shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="hero" id="home">
+    <div class="hero-bg-decor"></div>
+    <div class="hero-content">
+      <p class="hero-tag">✦ Gelato with Love</p>
+      <h1 class="hero-title">
+        Nikmati Rasa<br />
+        dengan <em>Rain'sScoop</em><br />
+        Es Krim Handmade
+      </h1>
+      <p class="hero-desc">
+        Setiap scoop Rain'sScoop dibuat segar setiap hari dengan bahan pilihan dan cita rasa premium.
+      </p>
+     <div id="apinWatermark">Developed by Riri</div>
+      <div class="hero-actions">
+        <a href="#products" class="btn btn-primary">Lihat Koleksi</a>
+        <a href="#contact" class="btn btn-outline">Hubungi Kami</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>5K+</strong><span>Pelanggan</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>30+</strong><span>Varian Rasa</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><strong>⭐ 5.0</strong><span>Rating</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-circle hero-circle--lg"></div>
+      <div class="hero-circle hero-circle--sm"></div>
+      <div class="hero-flower-grid">
+        <div class="flower-card fc1"><img src="./images/classic-gelato.jpg" alt="Classic Gelato" /><span>Gelato Classic</span></div>
+        <div class="flower-card fc2"><img src="./images/manggo-gelato.jpg" alt="Mangga Gelato" /><span>Mango</span></div>
+        <div class="flower-card fc3"><img src="./images/strawberry-gelato.jpg" alt="Strawberry Gelato" /><span>Strawberry</span></div>
+        <div class="flower-card fc4"><img src="./images/chocolate-gelato.jpg" alt="Chocolate Gelato" /><span>Chocolate</span></div>
+        <div class="flower-card fc5"><img src="./images/mint-gelato.jpg" alt="Mint Gelato" /><span>Mint</span></div>
+        <div class="flower-card fc6"><img src="./images/lemon-gelato.jpg" alt="Lemon Gelato" /><span>Lemon</span></div>
+        <div class="flower-card fc7"><img src="./images/pistachio-gelato.jpg" alt="Pistachio Gelato" /><span>Pistachio</span></div>
+        <div class="flower-card fc8"><img src="./images/mix-gelato.jpg" alt="Mix Gelato" /><span>Mix</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="promo-banner">
+    <div class="promo-track">
+      <span>🍨 Gratis Ongkir se-Bandung &nbsp;&nbsp; ✦ &nbsp;&nbsp;</span>
+      <span>🥭 Gelato Mango Mulai 165rb &nbsp;&nbsp; ✦ &nbsp;&nbsp;</span>
+      <span>🍓 Pesan mix Rasa &nbsp;&nbsp; ✦ &nbsp;&nbsp;</span>
+      <span>🍫 Coklat Premium Setiap Hari &nbsp;&nbsp; ✦ &nbsp;&nbsp;</span>
+      <span>🍨 Gratis Ongkir se-Bandung &nbsp;&nbsp; ✦ &nbsp;&nbsp;</span>
+      <span>🥭 Gelato Mango Mulai 165rb &nbsp;&nbsp; ✦ &nbsp;&nbsp;</span>
+      <span>🍓 Pesan Mix Rasa &nbsp;&nbsp; ✦ &nbsp;&nbsp;</span>
+      <span>🍫 Coklat Premium Setiap Hari &nbsp;&nbsp; ✦ &nbsp;&nbsp;</span>
+    </div>
+  </section>
+
+  <section class="checkout-page" id="checkoutWrapper">
+    <div class="section-header">
+      <p class="section-tag">Selesaikan Pesanan</p>
+      <h2 class="section-title">Checkout</h2>
+      <p class="section-desc">Isi data pengiriman dan metode pembayaran untuk menyelesaikan pesanan kamu.</p>
+    </div>
+    <div class="checkout-grid">
+      <div class="checkout-panel">
+        <div class="checkout-card">
+          <h3 class="checkout-title">Ringkasan Pesanan</h3>
+          <div id="coCartItems" class="co-cart-list"></div>
+          <div class="co-summary">
+            <div class="summary-row"><span>Subtotal</span><span id="coSubtotal">Rp 0</span></div>
+            <div class="summary-row"><span>Diskon</span><span id="coDiscount">-Rp 0</span></div>
+            <div class="summary-row"><span>Ongkir</span><span id="coOngkir">GRATIS</span></div>
+            <div class="summary-row total-row"><strong>Total</strong><strong id="coTotal">Rp 0</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="checkout-panel">
+        <div class="checkout-card">
+          <h3 class="checkout-title">Data Pengiriman</h3>
+          <div class="form-group">
+            <label for="coVoucher">Kode Voucher</label>
+            <input type="text" id="coVoucher" placeholder="RAINCUTE" />
+            <small>Gunakan RAINCUTE untuk potongan harga.</small>
+          </div>
+          <div class="form-group">
+            <label for="coShipping">Layanan Pengiriman</label>
+            <select id="coShipping">
+              <option value="0">Reguler (GRATIS)</option>
+              <option value="10000">Express (Rp 10.000)</option>
+              <option value="20000">Same Day (Rp 20.000)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="coPayment">Metode Pembayaran</label>
+            <select id="coPayment" onchange="renderCheckoutPayment()">
+              <!-- E-Wallets -->
+              <option value="DANA">DANA</option>
+              <option value="OVO">OVO</option>
+              <option value="GOPAY">GOPAY</option>
+              <!-- Virtual Account (VA) options - values use VA_ prefix for JS mapping -->
+              <option value="VA_BCA">Virtual Account (BCA)</option>
+              <option value="VA_MANDIRI">Virtual Account (Mandiri)</option>
+              <option value="VA_BNI">Virtual Account (BNI)</option>
+              <option value="VA_BRI">Virtual Account (BRI)</option>
+              <option value="SeaBank">SeaBank</option>
+              <!-- QRIS and COD -->
+              <option value="QRIS">QRIS</option>
+              <option value="COD">COD</option>
+            </select>
+            <small>Pembayaran non-COD harap kirim bukti pembayaran.</small>
+          </div>
+          <div class="form-group">
+            <label for="coNama">Nama Lengkap</label>
+            <input type="text" id="coNama" placeholder="Nama penerima" />
+          </div>
+          <div class="form-group">
+            <label for="coPhone">Nomor Telepon</label>
+            <input type="tel" id="coPhone" placeholder="08xx..." />
+          </div>
+          <div class="form-group">
+            <label for="coAlamat">Alamat Lengkap</label>
+            <textarea id="coAlamat" rows="4" placeholder="Alamat pengiriman lengkap"></textarea>
+          </div>
+          <div id="coError" class="form-error"></div>
+          <button id="coSubmitBtn" class="btn btn-primary btn-full">Bayar & Pesan</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="voucher-showcase" aria-label="Promo voucher dan diskon">
+    <div class="voucher-card reveal-on-scroll">
+      <div class="voucher-decor" aria-hidden="true">
+        <span class="flower-dot f1">🌸</span>
+        <span class="flower-dot f2">🌼</span>
+        <span class="flower-dot f3">🌷</span>
+      </div>
+      <div class="voucher-main">
+        <span class="voucher-badge">🎁 Voucher Spesial</span>
+        <span class="voucher-subbadge">⚡ Promo terbatas hari ini</span>
+        <h3>Diskon 20% + bonus scoop ekstra</h3>
+        <p>Gunakan kode <strong>RAINCUTE</strong> saat checkout untuk mendapatkan potongan harga dan scoop ekstra.</p>
+        <div class="voucher-features">
+          <span>Gratis Ongkir Bandung</span>
+          <span>Promo eksklusif 1–30 Juli 2026</span>
+          <span>Custom Kartu Ucapan</span>
+        </div>
+      </div>
+      <div class="voucher-side">
+        <div class="voucher-sticker">🌸</div>
+        <span class="voucher-code" id="voucherCodeText">RAINCUTE</span>
+        <p>minimal pemesanan 4 scoop</p>
+        <button type="button" class="voucher-copy-btn" onclick="copyVoucherCode()">Salin Kode</button>
+        <a href="#products" class="btn">Lihat Promo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="products-section" id="products">
+
+    <section class="detail-view" id="detailView" aria-live="polite" style="display:none;" data-view="detailView">
+    <div class="detail-view-overlay" aria-hidden="true"></div>
+
+    <div class="detail-view-inner">
+      <div class="detail-view-header">
+      <button class="btn btn-outline" type="button" onclick="backToProducts()">
+          <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar Produk
+        </button>
+        <span class="detail-view-hint">✦ Detail Produk</span>
+      </div>
+
+      <div class="detail-view-grid">
+        <div class="detail-view-media">
+          <div class="detail-view-img-wrap">
+            <img id="detailProductImage" alt="Gambar produk" src="" />
+          </div>
+          <div class="detail-view-media-emoji" id="detailProductEmoji"></div>
+        </div>
+
+        <div class="detail-view-info">
+          <div class="detail-view-category" id="detailProductCategory">-</div>
+          <h2 class="detail-view-name" id="detailProductName">-</h2>
+          <div class="detail-view-price" id="detailProductPrice">-</div>
+          <div class="detail-view-stock" id="detailProductStock">-</div>
+
+          <p class="detail-view-desc" id="detailProductDesc">-</p>
+
+          <div class="detail-view-actions">
+            <button class="btn btn-primary btn-detail" type="button" id="detailAddToCartBtn" onclick="addToCart(detailSelectedId)">
+              <i class="fa-solid fa-cart-plus"></i> Tambah ke Keranjang
+            </button>
+          </div>
+
+          <p class="detail-view-note">Stok diperbarui saat checkout.</p>
+        </div>
+      </div>
+
+      <div class="detail-view-not-found" id="detailNotFound" style="display:none;">
+        <div class="not-found-icon">🌿</div>
+        <h3>Produk tidak ditemukan.</h3>
+        <p>Coba pilih produk lain dari daftar.</p>
+      </div>
+    </div>
+  </section>
+
+    <div class="section-header">
+      <p class="section-tag">Varian Rasa Kami</p>
+      <h2 class="section-title">Rain'sScoop</h2> <p class="section-desc">Dibuat segar setiap hari dengan es krim dan gelato berkualitas pilihan</p>
+    </div>
+
+    <div class="product-search-wrap">
+      <input type="text" id="productSearch" class="product-search" placeholder="Cari produk, kategori, atau keterangan..." />
+      <button class="product-search-btn" type="button" onclick="submitProductSearch()">Cari</button>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-category="semua" onclick="filterProducts('semua', this)">Semua</button>
+      <button class="filter-btn" data-category="susu" onclick="filterProducts('susu', this)">Susu 🥛</button>
+      <button class="filter-btn" data-category="buah" onclick="filterProducts('buah', this)">Buah 🍓</button>
+      <button class="filter-btn" data-category="authentik" onclick="filterProducts('authentik', this)">Authentik 🌿</button>
+      <button class="filter-btn" data-category="mix" onclick="filterProducts('mix', this)">Mix 🍧</button>
+    </div>
+
+    </section>
+
+  <div class="detail-view-fallback-spacer" aria-hidden="true"></div>
+
+  <div class="products-grid" id="productsGrid"></div>
+
+  <section class="features-section">
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🍨</span>
+        <h3>Bahan Pilihan</h3>
+        <p>Kami hanya menggunakan bahan segar dan premium untuk setiap scoop dan gelato.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎁</span>
+        <h3>Packaging Cantik</h3>
+        <p>Setiap Cup Gelato dikemas rapi dan elegan, siap jadi hadiah yang berkesan, dan menambah kebahagiaan disetiap gigitan.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🚗</span>
+        <h3>Antar ke Lokasi</h3>
+        <p>Layanan pengiriman ke seluruh Bandung dengan penanganan hati-hati agar Gelato tetap utuh.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">✏️</span>
+        <h3>Custom Order</h3>
+        <p>Bisa request varian rasa, jenis gelato, dan kartu ucapan sesuai keinginanmu.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="vision-section">
+    <div class="section-header">
+      <p class="section-tag">Visi & Misi</p>
+      <h2 class="section-title">Apa yang Kami Usung</h2>
+      <p class="section-desc">Rain'sScoop hadir untuk Anda yang sedang patah hati, menjadikan hari-hari mu kembali ceria!.</p>
+    </div>
+    <div class="vision-grid">
+      <div class="vision-card">
+        <h3>Visi</h3>
+        <p>Menjadi toko Ice Cream Gelato yang tak pernah terkalahkan,dan selalu rindu akan rasanya yang lembut.</p>
+      </div>
+      <div class="vision-card">
+        <h3>Misi</h3>
+        <p>Memberikan kualitas Ice Cream Gelato tanpa bahan pengawet dan pemanis buatan, serta menyajikan pelayanan terbaik kepada pelanggan setia Rain'sScoop.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-section">
+    <div class="section-header">
+      <p class="section-tag">Informasi Penting</p>
+      <h2 class="section-title">Semua yang Perlu Kamu Tahu</h2>
+    </div>
+    <div class="info-grid">
+      <article class="info-card" id="cara-pesan">
+        <button class="info-toggle" type="button" aria-expanded="false" aria-controls="cara-pesan-panel">
+          <span class="info-toggle__title">Cara Pesan</span>
+          <span class="info-toggle__icon" aria-hidden="true">+</span>
+        </button>
+        <div class="info-panel" id="cara-pesan-panel" aria-hidden="true">
+          <ol class="info-list">
+            <li>Pilih gelato yang kamu inginkan dari koleksi kami.</li>
+            <li>Klik tombol + Keranjang untuk menambahkan ke keranjang.</li>
+            <li>Lanjutkan ke checkout dan kami akan menghubungi kamu lewat WhatsApp.</li>
+          </ol>
+        </div>
+      </article>
+      <article class="info-card" id="syarat-ketentuan">
+        <button class="info-toggle" type="button" aria-expanded="false" aria-controls="syarat-ketentuan-panel">
+          <span class="info-toggle__title">Syarat & Ketentuan</span>
+          <span class="info-toggle__icon" aria-hidden="true">+</span>
+        </button>
+        <div class="info-panel" id="syarat-ketentuan-panel" aria-hidden="true">
+          <ul class="info-list">
+            <li>Pesanan diproses sesuai urutan yang masuk.</li>
+            <li>Harga bisa berubah sesuai jenis gelato dan request custom.</li>
+            <li>Pengiriman berlaku untuk area Bandung dan sekitarnya.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="info-card" id="faq">
+        <button class="info-toggle" type="button" aria-expanded="false" aria-controls="faq-panel">
+          <span class="info-toggle__title">FAQ</span>
+          <span class="info-toggle__icon" aria-hidden="true">+</span>
+        </button>
+        <div class="info-panel" id="faq-panel" aria-hidden="true">
+          <ul class="info-list">
+            <li>Apakah bisa request Rasa khusus? Ya, kami menerima Rasa khusus.</li>
+            <li>Berapa lama pengiriman? Biasanya 10-30 menit, tergantung pada jarak lokasi.</li>
+            <li>Apakah ada ongkir gratis? Tersedia untuk area tertentu di Bandung.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <div class="contact-container">
+      <div class="contact-info">
+        <p class="section-tag">Hubungi Kami</p>
+        <h2>Pesan Gelato<br /><em>Impianmu</em></h2>
+        <p>Punya permintaan khusus? Kami siap membantu mewujudkan gelato impianmu.</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <span>📍</span>
+            <span>Jl. kenangan indah bersama mu No. 18, Bandung</span>
+          </div>
+          <div class="contact-item">
+            <span>📱</span>
+            <span>+62 881-5103 - 299(WhatsApp)</span>
+          </div>
+          <div class="contact-item">
+            <span>🕐</span>
+            <span>Senin – Sabtu, 08.00 – 20.00 WIB</span>
+          </div>
+          <div class="contact-item">
+            <span>📸</span>
+            <span>@rainsscoop.bdg (Instagram)</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-wrapper">
+        <div class="contact-form">
+          <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="contactName" placeholder="Nama kamu..." />
+          </div>
+          <div class="form-group">
+            <label>Nomor WhatsApp</label>
+            <input type="text" id="contactPhone" placeholder="+62..." />
+          </div>
+          <div class="form-group">
+            <label>Pesan / Pesanan</label>
+            <textarea id="contactMsg" rows="4" placeholder="Ceritakan variam favorit mu..."></textarea>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="submitContact()">Kirim Pesan via WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="logo-text">🍨 Rain's <em>Scoop</em></span> <p>Satu scoop yang memberikan kebahagiaan.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#products">Produk</a></li>
+          <li><a href="#contact">Kontak</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Kategori</h4>
+        <ul>
+          <li><a href="#products" onclick="event.preventDefault(); openCategory('susu')">Gelato Susu</a></li>
+          <li><a href="#products" onclick="event.preventDefault(); openCategory('buah')">Gelato Buah</a></li>
+          <li><a href="#products" onclick="event.preventDefault(); openCategory('authentik')">Gelato Authentik</a></li>
+          <li><a href="#products" onclick="event.preventDefault(); openCategory('mix')">Mix & Special</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Info</h4>
+        <ul>
+          <li><a href="#cara-pesan">Cara Pesan</a></li>
+          <li><a href="#syarat-ketentuan">Syarat & Ketentuan</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Rain'sScoop. Dibuat dengan 💗 di Bandung.</p>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div id="apinWatermark">Developed by RSy</div>
+    <div class="cart-header">
+      <h3>🛒 Keranjang Belanja</h3>
+      <button class="cart-close" onclick="toggleCart()">✕</button>
+    </div>
+
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <span>🍨</span>
+        <p>Keranjangmu masih kosong.<br />Yuk pilih rasa favorit mu!</p>
+      </div>
+    </div>
+
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="voucher-box">
+        <label class="voucher-label" for="voucherInput">Kode Voucher</label>
+        <div class="voucher-row">
+          <input type="text" id="voucherInput" class="voucher-input" placeholder="Contoh: RAINCUTE" />
+          <button class="voucher-btn" type="button" onclick="applyVoucher()">Gunakan</button>
+        </div>
+        <p class="voucher-hint">Gunakan kode: RAINCUTE</p>
+        <div class="voucher-status" id="voucherStatus">Masukkan kode voucher untuk dapat diskon.</div>
+      </div>
+
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="subtotalPrice">Rp 0</span>
+        </div>
+        <div class="summary-row">
+          <span>Diskon</span>
+          <span id="discountPrice" class="discount-price">-Rp 0</span>
+        </div>
+        <div class="summary-row">
+          <span>Ongkir</span>
+          <span class="free-tag">GRATIS</span>
+        </div>
+        <div class="summary-row total-row">
+          <strong>Total</strong>
+          <strong id="totalPrice">Rp 0</strong>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="goToCheckout()">Checkout Sekarang</button>
+      <button class="btn btn-outline btn-full mt-8" onclick="clearCart()">Kosongkan Keranjang</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+  <script src="checkout_payment.js"></script>
+  <script>initCSWidget();</script>
+</body>
+</html>

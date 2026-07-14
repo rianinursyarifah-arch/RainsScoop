@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Produk - Rain'sScoop</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400&family=Montserrat:wght@200;400;500&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="./style.css" />
+  
+  <style>
+    /* ===== PALET WARNA PASTEL & INSTRUKSI FONT ===== */
+    :root {
+      --primary: #F8BBD0;       /* Pink Pastel */
+      --ad-pink-lt: #FDF0F3;    /* Light Pink Pastel */
+      --accent: #E8F5E9;       /* Hijau Pastel */
+      --bg-ivory: #FFFDD0;     /* Cream Pastel */
+      --bg-beige: #C8E6C9;     /* Hijau Pastel Muted untuk batasan/border */
+      --text-dark: #333333;
+      --text-light: #555555;
+      --star-color: #F59E0B;
+    }
+
+    /* Mengubah seluruh font isi (selain heading) menjadi Comic Sans MS */
+    body, p, span, div, label, input, button, select, textarea, td, th, li, a {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif !important;
+    }
+
+    /* Mempertahankan font style asli khusus untuk Heading saja */
+    h1, h2, h3, h4, h5, h6, .brand-title {
+      font-family: 'Cormorant Garamond', serif !important;
+    }
+
+    /* Penyesuaian background utama halaman detail */
+    body {
+      background-color: var(--bg-ivory) !important;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="container" style="padding: 40px 20px;">
+    
+    <header style="text-align: center; margin-bottom: 40px;">
+      <h1 class="brand-title" style="font-size: 3rem; margin-bottom: 5px;">� Rains'sScoop</h1>
+      <h3 style="font-size: 1.5rem; font-weight: 300; color: var(--text-light);">Varian Rasa Segar Pilihan Terbaik Untuk Anda</h3>
+    </header>
+
+    <div id="productDetailContainer">
+      </div>
+
+    <section class="varian-rasa-showcase" style="margin-top: 30px; text-align: center;">
+      <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Pilihan Varian Rasa Favorit</h3>
+      <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px;">
+        <span style="background: var(--ad-pink-lt); border: 1px solid var(--bg-beige); padding: 8px 15px; border-radius: 20px;">🎒 Gelato</span>
+        <span style="background: var(--ad-pink-lt); border: 1px solid var(--bg-beige); padding: 8px 15px; border-radius: 20px;">🥭 Mangga</span>
+        <span style="background: var(--ad-pink-lt); border: 1px solid var(--bg-beige); padding: 8px 15px; border-radius: 20px;">🍓 Strawberry</span>
+        <span style="background: var(--ad-pink-lt); border: 1px solid var(--bg-beige); padding: 8px 15px; border-radius: 20px;">🍫 Chocolate</span>
+        <span style="background: var(--ad-pink-lt); border: 1px solid var(--bg-beige); padding: 8px 15px; border-radius: 20px;">🌱 Mint</span>
+        <span style="background: var(--ad-pink-lt); border: 1px solid var(--bg-beige); padding: 8px 15px; border-radius: 20px;">🍋 Lemon</span>
+        <span style="background: var(--ad-pink-lt); border: 1px solid var(--bg-beige); padding: 8px 15px; border-radius: 20px;">🥜 Pistacio</span>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Fungsi bawaan Anda untuk me-render ulasan produk dan detail produk
+    function renderProductDetails(produk, ulasanTerpilih) {
+      const container = document.getElementById('productDetailContainer');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="product-main-layout" style="background: var(--accent); border: 1px solid var(--bg-beige); padding: 30px; border-radius: 12px;">
+          <h2 style="font-size: 2.2rem; margin-bottom: 10px;">${produk.name}</h2>
+          <p class="product-price" style="font-size: 1.5rem; font-weight: bold; color: var(--text-dark);">Rp ${produk.price.toLocaleString('id-ID')}</p>
+          <p class="product-description" style="color: var(--text-light); line-height: 1.6;">${produk.description}</p>
+        </div>
+
+        <div class="reviews-section" style="margin-top: 40px;">
+          <h3 style="font-size: 1.8rem; margin-bottom: 20px;">Ulasan Pelanggan (${ulasanTerpilih.length})</h3>
+          <div id="reviewsContainer">
+            ${ulasanTerpilih.map(rev => `
+              <div class="review-card" style="background: var(--ad-pink-lt); border: 1px solid var(--bg-beige); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                <div class="review-header" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span class="reviewer-name" style="font-weight: bold;">${rev.nama}</span>
+                  <span style="color: var(--star-color); font-size: 12px;">
+                    ${Array(Math.floor(rev.bintang)).fill('<i class="fa-solid fa-star"></i>').join('')}
+                    ${rev.bintang % 1 !== 0 ? '<i class="fa-solid fa-star-half-stroke"></i>' : ''}
+                    <span style="color: var(--text-dark); margin-left: 4px; font-weight:500;">${rev.bintang.toFixed(1)}</span>
+                  </span>
+                </div>
+                <div class="review-text" style="font-style: italic;">"${rev.teks}"</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // Simulasi inisialisasi data bawaan dari script asli Anda
+    window.addEventListener('DOMContentLoaded', () => {
+      const dummyProduct = {
+        id: 3,
+        name: "Gelato Premium Mix Scoop",
+        price: 120000,
+        image: "",
+        description: "Nikmati kombinasi es krim gelato Italia premium yang dipadukan dengan buah-buahan segar alami. Tekstur lembut dan manisnya pas di lidah."
+      };
+      
+      const dummyReviews = [
+        { nama: "Andi", bintang: 5.0, teks: "Rasa pistachio dan cokelatnya juara banget, sangat lembut!" },
+        { nama: "Siti", bintang: 4.5, teks: "Sangat segar, rasa buah mangga dan strawberry-nya kerasa alami." }
+      ];
+
+      renderProductDetails(dummyProduct, dummyReviews);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Admin — Rain'sScoop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin_style.css" />
+  <style>
+    /* TAMBAHAN: Override warna eksternal ke tema pastel & font Snap ITC warna hitam */
+    :root {
+      --ad-bg: #FFFDD0;          /* Cream Pastel */
+      --ad-sidebar: #E8F5E9;     /* Hijau Pastel */
+      --ad-card: #FFFDD0;        /* Cream Pastel */
+      --ad-offwhite: #FFFEEA;    /* Light Cream Pastel */
+      --ad-pink: #F8BBD0;        /* Pink Pastel */
+      --ad-pink-lt: #FDF0F3;     /* Light Pink Pastel */
+      --ad-border: #C8E6C9;      /* Hijau Pastel Muted */
+      --ad-muted: #333333;       /* Hitam Muted */
+    }
+
+    /* Mengubah seluruh isi halaman menggunakan font Comic Sans MS dengan warna hitam */
+    * {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Sans', sans-serif !important;
+      color: #000000 !important; /* Font warna hitam */
+    }
+
+    /* Hanya tulisan heading dan sub heading saja yang menggunakan Snap ITC */
+    .ad-auth-title,
+    .ad-auth-sub,
+    .ad-auth-field label {
+      font-family: 'Copperplate Gothic Light', 'Arial Black', sans-serif !important;
+    }
+
+    /* Mengembalikan warna ikon emoji bawaan agar tetap terlihat berwarna */
+    .ad-auth-icon {
+      color: initial !important;
+    }
+
+    /* Tambahan penyesuaian visual warna background halaman login */
+    body, .ad-auth-page {
+      background-color: var(--ad-bg) !important;
+    }
+    .ad-auth-card {
+      background-color: var(--ad-sidebar) !important; /* Menggunakan Hijau Pastel untuk kartu login */
+      border: 2px solid var(--ad-pink) !important;
+    }
+    input {
+      background-color: #ffffff !important;
+      border: 1px solid var(--ad-border) !important;
+    }
+    .ad-auth-btn {
+      background-color: var(--ad-pink) !important;
+      border: 1px solid var(--ad-border) !important;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="ad-auth-page">
+    <div class="ad-auth-card">
+      <span class="ad-auth-icon">🍨</span>
+      <h1 class="ad-auth-title">Rain'sScoop Admin</h1>
+      <p class="ad-auth-sub">Masuk ke panel pengelola toko</p>
+
+      <form onsubmit="doLogin(event)">
+        <div class="ad-auth-field">
+          <label for="adminEmail">Email Admin</label>
+          <input type="email" id="adminEmail" placeholder="admin@rainsscoop.com" required autofocus />
+        </div>
+        <div class="ad-auth-field">
+          <label for="adminPwd">Kata Sandi Admin</label>
+          <input type="password" id="adminPwd" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="ad-auth-btn">Masuk</button>
+        <p class="ad-auth-msg" id="adminLoginMsg"></p>
+      </form>
+
+      <p class="ad-auth-hint">Kembali ke <a href="index.html" style="color:var(--ad-pink)">Halaman Toko →</a></p>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="admin_script.js"></script>
+  <script>
+    // Jika sudah login, langsung ke dashboard
+    if (isLoggedIn()) window.location.href = "admin_dashboard.html";
+  </script>
+</body>
+</html>

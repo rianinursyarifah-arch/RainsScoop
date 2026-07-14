@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pesanan — Rain'sScoop Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin_style.css" />
+  <style>
+    /* TAMBAHAN: Override warna eksternal ke tema pastel & font Snap ITC warna hitam */
+    :root {
+      --ad-bg: #FFFDD0;          /* Cream Pastel */
+      --ad-sidebar: #E8F5E9;     /* Hijau Pastel */
+      --ad-card: #FFFDD0;        /* Cream Pastel */
+      --ad-offwhite: #FFFEEA;    /* Light Cream Pastel */
+      --ad-pink: #F8BBD0;        /* Pink Pastel */
+      --ad-pink-lt: #FDF0F3;     /* Light Pink Pastel */
+      --ad-border: #C8E6C9;      /* Hijau Pastel Muted */
+      --ad-muted: #333333;       /* Hitam Muted */
+    }
+
+    * {
+      font-family: 'Copperplate Gothic Light', 'Arial Black', sans-serif !important;
+      color: #000000 !important; /* Font warna hitam */
+    }
+
+    /* Mengembalikan warna ikon emoji bawaan agar tetap terlihat berwarna */
+    .ad-brand-icon, .ad-nav-icon {
+      color: initial !important;
+    }
+
+    /* Tambahan penyesuaian visual warna background utama dan komponen */
+    body, .ad-shell {
+      background-color: var(--ad-bg) !important;
+    }
+    .ad-sidebar {
+      background-color: var(--ad-sidebar) !important;
+      border-right: 2px solid var(--ad-pink);
+    }
+    .ad-card {
+      background-color: var(--ad-card) !important;
+      border: 2px solid var(--ad-pink) !important;
+    }
+    .ad-filter-btn {
+      background-color: #ffffff !important;
+      border: 1px solid var(--ad-border) !important;
+    }
+    .ad-filter-btn.active {
+      background-color: var(--ad-pink) !important;
+      border-color: var(--ad-pink) !important;
+    }
+    .ad-table th {
+      background-color: var(--ad-sidebar) !important;
+      border-bottom: 2px solid var(--ad-border) !important;
+    }
+    .ad-table td {
+      border-bottom: 1px solid var(--ad-border) !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="ad-shell">
+
+  <!-- SIDEBAR (akan diganti oleh shared component) -->
+  <aside class="ad-sidebar">
+    <div class="ad-brand">
+      <!-- UBAH: Brand Icon menjadi Ice Cream -->
+      <div class="ad-brand-icon">🍨</div>
+      <!-- UBAH: Nama Dashboard menjadi Rain'sScoop -->
+      <div class="ad-brand-name">Rain's<em>Scoop</em></div>
+      <div class="ad-brand-sub">Panel Admin</div>
+    </div>
+    <nav class="ad-nav">
+      <a href="admin_dashboard.html" class="ad-nav-link"><span class="ad-nav-icon">📊</span> Dashboard</a>
+      <a href="admin_produk.html"    class="ad-nav-link"><span class="ad-nav-icon">🍨</span> Produk</a>
+      <a href="admin_pesanan.html"   class="ad-nav-link active"><span class="ad-nav-icon">📦</span> Pesanan</a>
+    </nav>
+    <div class="ad-sidebar-footer">
+      <button class="ad-logout-btn" onclick="doLogout()">🚪 Keluar</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="ad-main">
+    <div class="ad-topbar">
+      <div>
+        <div class="ad-page-title">Kelola Pesanan</div>
+        <div class="ad-page-sub">Pantau dan update status pesanan pelanggan</div>
+      </div>
+    </div>
+
+    <div class="ad-card" style="margin-bottom:1.25rem;">
+      <div class="ad-card-header" style="justify-content:space-between;gap:1rem;">
+        <span class="ad-card-title">☰ Kontrol Sidebar</span>
+        <button id="sidebarToggleBtn" type="button" class="ad-btn-add" onclick="toggleSidebar()">☰ Collapse</button>
+      </div>
+    </div>
+    <div id="RSyWatermark">Developed by Riani Nur Syarifah</div>
+
+    <div class="ad-card">
+      <div class="ad-card-header">
+        <span class="ad-card-title">📦 Semua Pesanan</span>
+        <!-- Filter buttons -->
+        <div class="ad-filters">
+          <button class="ad-filter-btn active" data-filter="semua" onclick="filterPesanan(this)">Semua</button>
+          <button class="ad-filter-btn" data-filter="Menunggu Konfirmasi" onclick="filterPesanan(this)">Menunggu Konfirmasi</button>
+          <button class="ad-filter-btn" data-filter="Diproses" onclick="filterPesanan(this)">Diproses</button>
+          <button class="ad-filter-btn" data-filter="Selesai" onclick="filterPesanan(this)">Selesai</button>
+        </div>
+      </div>
+      <div class="ad-table-wrap">
+        <table class="ad-table">
+<thead>
+            <tr>
+              <th>No. Pesanan</th>
+              <th>Pembeli</th>
+              <th>Produk</th>
+              <th>Total</th>
+              <th>Metode Pembayaran</th>
+              <th>Tanggal</th>
+              <th>Status</th>
+            </tr>
+
+
+          </thead>
+          <tbody id="pesananTableBody">
+            <tr><td colspan="6" class="ad-empty">Memuat...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="admin_sidebar_component.js"></script>
+<script src="admin_script.js"></script>
+<script>
+  initPesanan();
+
+  // shared sidebar injected => disable local toggleSidebar implementations
+  // (to avoid duplicate collapse logic)
+
+
+function filterPesanan(btn) {
+    document.querySelectorAll(".ad-filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderPesananTable(btn.dataset.filter);
+  }
+
+  // toggleSidebar() & init collapse sekarang di-handle oleh admin_sidebar_component.js
+</script>
+</body>
+</html>
